@@ -1,0 +1,217 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{subfigure}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{ECA-Net based Blind Recognition of LDPC Codes Under Multi-Path Fading Conditions\\
+
+\thanks{The work described in this paper was funded by the National Natural Science Foundation of China Enterprise Innovation and Development Joint Fund (No. U19B2044). The authors would like to thank anonymous reviewers, Associate Editor and Editor for their constructive comments and for improving the manuscript. \textit{(Corresponding author: Chunjie Cao)}}
+}
+
+\author{\IEEEauthorblockN{Haifeng Peng\textsuperscript{1,2}, Chunjie Cao\textsuperscript{1,2}, Yang Sun\textsuperscript{1,2}, Xiuhua Wen\textsuperscript{1,2}, Haoran Li\textsuperscript{1,2}}
+\IEEEauthorblockA{
+	\textsuperscript{1}School of Cyberspace Security (School of Cryptology), Hainan University, Haikou, China\\
+	\textsuperscript{2}Key Laboratory of Internet Information Retrieval of Hainan Province, Hainan University, Haikou, China\\
+	peng\_hf@163.com, chunjie\_cao@126.com, sunydat@foxmail.com, 403860274@qq.com, flutterblu@qq.com}
+}
+
+\maketitle
+
+\begin{abstract}
+Channel coding is an efficient approach for data transmission in wireless network, blind recognition of channel codes plays a pivotal role in non-cooperative communication and spectral scrutiny. But there are difficulties in low veracity and robustness of the current researches, meanwhile, most of them analysis it in AWGN (additive white Gaussian noise) channel which is in large difference of practical condition. This paper proposes a deep learning based algorithm that extracts features voluntarily by neural network, it achieve a high accuracy and avoid manual feature extraction. ECA-Net is used in the proposed recognizer, it put up a outstanding performance in Nakagami-m fading condition. Simulation experiments show that ...
+
+
+\begin{IEEEkeywords}
+	Physical layer security, channel codes, blind identification, multi-path fading.
+\end{IEEEkeywords}
+
+\end{abstract}
+
+
+\section{Introduction}
+
+%\begin{figure*}[htbp]
+%	\centerline{\includegraphics[scale=0.5]{figure-3-01.eps}}
+%	\caption{Structure of the communication model.}
+%	\label{fig1}
+%\end{figure*}
+
+
+Wireless network is accessorial applied in current year, it caused the lack of the frequency spectrum resource. Arising of cognitive radio alters the status quo, and remits the problem to a certain degree. Accompanying demand in cognitive wireless network \cite{2021Analysis} make wireless security become a key research area such as channel codes, modulation types, medium access control protocols.
+
+Blind identification of channel codes \cite{xia2013novel} is a research field to estimate the channel coding scheme of mater user in cognitive wireless network, it possesses the signification of wireless physical security. Existent algorithms to distinguish channel codes need relative more professional skills and experience, e.g., Swaminathan R et al. \cite{swaminathan2017parameter} proposed an algorithm for blindly identifying RS codes in AWGN channel, assessed the performance of  emulation in different M-ary quadrature amplitude modulation, but this approach to blind identification of channel codes need extract feature manually, extremely depends experience of the manipulator.
+
+Over the last few years, the evolution of deep learning make it embody a functionality in image classification \cite{pei2019effects} and natural language processing \cite{hao2021health}, deep learning show excellent property in too many domains by data-driven. In the meantime, deep learning is comprehensively used in communication territory because of a large number of data in wireless communication systems, such as modulation recognition \cite{jiang2021automatic}, channel estimation \cite{ebrahiem2021deep}, channel coding identification \cite{tian2020deep}. 
+
+The travel path of electromagnetic wave in interspace is complicated and changeable, signal would suffer multi-path fading effect during transmitting procedure. Multipath propagation and
+shadowing from obstacles result in fading, and it impacts the performance of wireless communication systems \cite{priyanka2018k}. Sepehr Dehdashtian et al. \cite{dehdashtian2021deep} researched blind recognition of channel codes under single-path Rayleigh fading channel and multi-path Rayleigh fading channel based deep learning, recovers parameters of channel coeds on candidate set by the received signal, but there is a large error between actual fading and Rayleigh fading model. Beyond that, the most researches on blind recognition of channel codes are in AWGN channel until now, but there are signal distortion by multi-path fading effect in actual correspondence. 
+
+In this paper, we proposed a recognizer based ECA-Net \cite{2020ECA}, which could blindly identify LDPC codes in Nakagami-m fading \cite{le2020wireless} channel using deep learning. This recognizer could distinguish LDPC codes in intercept codewords which coding with different parameters. Through experiments, we demonstrate our recognizer based deep learning architecture could achieve a high performance on blind identification of LDPC codes in multi-path conditions without any priori knowledge, i.e., it could realize totally blind identification of LDPC codes.
+
+The residue of this paper is organized as follows. Section II formulates the problem of channel coding recognition and explains Nakagami-m fading. Section III discusses the proposed ECA-Net based recognizer for blind identification of LDPC codes. Section IV gives the results of simulation experiments. Section V concludes this paper.
+
+
+\section{Preliminaries}
+
+\subsection{System Structure}
+In non-cooperate communication, the status of the transmitter is completely unknown to the receiver, and the receiver could only intercept signal. The goal of blind channel coding recognition is to analyze the type and parameter that the transmitter used via the received data. (image)
+
+...
+
+The information source generate bit information stream $\boldsymbol{b} = ({b}_{1}, {b}_{2}, \ldots, {b}_{n}$, where $n$ is the length of bit sequence. The transmitter codes bit information stream $\boldsymbol{b}$ using a set of channel coding parameters $C_i$ which is from candidate set $\Theta={C_{1}, C_{2}, \ldots, C_{N}}$, where $N$ is the number of channel coding in the set $(1 < i < N)$, then get  the codeword $\boldsymbol{c}=({c}_{1}, {c}_{2}, \ldots, {c}_{n})$, where $c_{i} \in \operatorname{GF}(2)$. Codewords would be modulated in BPSK and transfer to the channel, and the non-cooperate receiver intercepts signal. The received signal is $\boldsymbol{r} = (r_{1}, r_{2}, \ldots, r_{n})$, it could be written as
+\begin{equation}
+	\boldsymbol{r} = \boldsymbol{c}^{BPSK}+\boldsymbol{n}
+\end{equation}
+where $\boldsymbol{c}^{BPSK} \in \{+1,-1\}$ is the modulated symbol of the codeword $\boldsymbol{c}$, and $\boldsymbol{n}$ is zero-mean AWGN which is independent identically distributed with noise power $\sigma^{2}$.
+
+
+\subsection{Nakagami-m Fading}
+In the transmitting procedure of electromagnetic wave, on account of reflection, refraction, diffraction, the path that signal transfer is disparate, and the signal that receiver get is superposed with multi-path signal, it is multi-path effect. Meanwhile, there is Doppler principle in signal transfer, it would give rise to a errand between transmitted signal frequency and received signal frequency. The small-scale fading by multi-path effect and Doppler principle is the research emphasis of wireless fading.
+
+Nakagami-m fading channel could emulate different channel fading condition by opposite argument m, and the obtained data is superior identical to experimental measured value. This model could preferable simulate  component of the signal including Gaussian, Rice, Rayleigh, etc. The theory of Nakagami-m fading with
+\begin{equation}
+	{R}_{Nakagami }({t}) = {a}\left|{g}_{1}({t})\right| + {b} \sqrt{{g}_{2}^{2}({t}) + {g}_{3}^{2}({t})} + {c}
+\end{equation}
+where $g_1(t), g_2(t), g_3(t)$ are standalone AWGN sequences, $a, b, c$ are undetermined coefficients which are related to fading average power $\Omega$ and fading factor $m$. Nakagami-m fading is based on actual measured data and curve fitting, the corresponding probability density function (PDF) of envelope and phase are
+\begin{equation}
+	{p}({r}) = \frac{2}{\Gamma({m})}\left(\frac{m}{\Omega}\right)^{m} {r}^{2 {~m}-1} {e}^{-\frac{m}{\Omega} {r}^{2}}, {r} \geq 0
+\end{equation}
+\begin{equation}
+	{p}(\varphi) = \frac{\Gamma({m})|\sin 2 \varphi|^{{m}-1}}{2^{{m}} \Gamma^{2}\left(\frac{{m}}{2}\right)}, \varphi \in[0,2 \pi)
+\end{equation}
+where $\Gamma(m)$ is Gamma function, $\Omega$ is second central moment and $\Omega = E[r^2]$, it is average power of multi-path scattering, m is fading factor that expresses the degree of signal attenuation by multi-path effect and scattering. The degree of channel fading would be more serious as m decreases. When $\Omega = 1$, the Nakagami-m probability density distribution curve at different $m$ is shown in Fig. 2, ...
+
+...(Fig)
+
+
+\section{Proposed Recognition Approach}
+
+\subsection{Data Preprocessing}
+For solving the signal distortion by channel fading, we propose a constellation formation algorithm of LDPC codes under Nakagami-m fading channel. The goal of constellation formation algorithms is increasing the probability of selecting constellation that closes to the origin. We use constellation map to maximize the probability of outputting bit 0 by altering the probability of bit 0 and bit 1 in output sequence.
+
+There are $2^{K_s}$ maps in the codebook, it would make output codewords in each map to possess minimum Hamming weight. Map $K_s$ bit input codeword in all-zero to $N_s$ bit output codeword in all-zero, then increment the $K_s$ bit output codeword by 1, map to $N_s$ bit output codeword of Hamming weight $\omega$ which is started from 1 and take the minimum value currently allowed, repeat the above steps until the number of map in the codebook attain $|{C}_{s}|=2^{{K}_{s}}$.
+
+The channel capacity $C_i$ of this system could be defined as
+\begin{equation}
+	C_{i} = E\left[l b\left(\frac{2^{m-1} e^{\left|-\frac{(y-x)^{2}}{2 \delta^{2}}\right|}}{\sum_{s \in X} \operatorname{Pr}(s) e^{\left|-\frac{(r-s)}{2 \delta^{2}}\right|}}\right)\right]
+\end{equation}
+where ${E}[\cdot]$ is expect function, $\operatorname{Pr}(s)$ is the probability of forming bit that corresponds the constellation points in planisphere. Make $\operatorname{Pr}(s) = p_0$ when first bit is 0 in of constellation point in planisphere, $\operatorname{Pr}(s) = p_1$ when it is 1. In a system without constellation formation, $p_0 = p_1$ and denotes SNR as $SNR_0$, when adding constellation formation, ${p}_{0} \neq {p}_{1}$ and denotes SNR which could reaches the same capacity as $SNR_1$, this moment $SNR_1 < SNR_0$, the gain of constellation formation algorithm could attain $(SNR_0 - SNR_1)$dB.
+
+\subsection{Deep Learning Framework}
+Deep learning is a major breakthrough in computer science realm, play a central role in most computer vision system. In recent years, deep learning is also being applied to other areas, and some encouraging results have been achieved. 
+
+The filter of neural network convolutes eigenmatrix and generate feature map, then performs max pooling to each feature map, record the largest number in each feature map. In penultimate floor, neural network joints eigenvalue to eigenvector, finally input softmax function, and softmax function classifies data by it.
+
+There is a filter with weight matrix $\omega$ in region size $h$, and $h \times d$ parameters need be estimated of $\omega$. Eigenmatrix could be denoted as $\boldsymbol{A} \in \mathbb{R}^{s \times d}$, the sub-matrix in eigenmatrix $\boldsymbol{A}$ from $p$-th row to $q$-th row is $\boldsymbol{A}[p : q]$. The output $\boldsymbol{o} \in \mathbb{R}^{s - h + 1}$ from the convolution operator is obtained by repeated applies filters to sub-matrix in $\boldsymbol{A}$, and it could be formulated as
+\begin{equation}
+	o_{p}=\omega * \boldsymbol{A}[{p}: {p}+{h}-1]
+\end{equation}
+where $p$ is row in $\boldsymbol{A}$ $(1 \leq {p} \leq {s} - {h} + 1)$ . So feature mapping $\boldsymbol{z}$ of this filter could be operated as
+\begin{equation}
+	\boldsymbol{z}=f(\boldsymbol{o}+\boldsymbol{b})
+\end{equation}
+where $f$ is activate function, $\boldsymbol{b}$ is offset item. Neural network can use filters that area sizes are identical, or uses same filter with different area sizes to learn complementary features from eigenmatrix.
+
+
+\subsection{ECA-Net}
+ECA-Net is a sort of convolutional neural network (CNN) with novel channel attention mechanisms, it improves channel attention module based SeNet. A new approach to adaptive selection of convolutional kernel and local cross-channel interaction policy was realized  in ECA-Net, it boosts performance of complex attention module and reduces the complexity of neural network model. 
+
+...Fig
+
+The operating principle of channel attention mechanism in ECA module is shown in Fig. 2. Firstly input the features of original data, proceed GAP to the features and obtains features without dimension reduction. On this basis, ECA module gets local cross-channel interactions by fast 1-dimensional convolution with size $k$, parameter $k$ could be generated by adaptive function with size $C$ of the input channel. Later calculate the ratio of weight in each channel by using sigmoid function, obtain features with channel attention by combining original input feature and channel weight. The neural network that takes in ECA module could more easily extract discriminant feature based channel dimension.
+
+...Fig
+
+We establish ECA-Net based on ResNet and the structure of the network is shown in Fig. 3. Input feature $X$ and the feature of convolution $F(X)$ directly correspond to the addition of dimensions, i.e., $F(X) + X$, it avoids gradient dissipation problem that the depth of neural network is too deep, make performance of global neural network would not be deviated as depth increased. The neural network cuts in ECA module after third convolution in base residual block, the preponderance of channel attention mechanism in ECA module perfects ResNet and make neural network could focus on discriminant region of data, thus improves performance of neural network.
+
+Overall model of neural network all use cross entropy as loss function, the loss function of each branch could write as
+\begin{equation}
+	{L}_{raw} = -\log \left({P}_{r}({c})\right)
+\end{equation}
+\begin{equation}
+	{L}_{object} = -\log \left({P}_{o}({c})\right)
+\end{equation}
+\begin{equation}
+	{L}_{part} = -\sum_{n=0}^{N-1} \log \left(P_{p(n)}(c)\right)
+\end{equation}
+where $L_raw$, $L_object$, $L_part$ are respectively loss functions of each branch in raw codeword, object level codeword, part level codeword, $c$ is actual label of input codeword, $P_r$, $P_o$ are respectively classification probability value that softmax function takes raw codeword, object level codeword after training by neural network, $P_{p(n)}$ is classification classification that softmax function takes the $n$-th codeword in part level codeword after training by neural network, and $N$ is the number of part level codeword. The loss function of overall neural network $L_total$ is defined as
+\begin{equation}
+	L_{total}=L_{raw}+L_{object}+L_{part}
+\end{equation}
+in the base of $L_total$, model make overall neural network training fitting by constantly training to optimize.
+
+%\begin{figure}[htbp]
+%	\centerline{\includegraphics[scale=0.4]{figure-4-01.eps}}
+%	\caption{Deep residual shrinkage unit.}
+%	\label{fig}
+%\end{figure}
+
+\subsection{Hyper-Parameter Selection}
+Hyper-parameter adjustment is the pivotal step in deep learning, we select optimal hyper-parameter after multiple experimental adjustment. The number of ECA module is selected as 5, the number of convolution kernel is 256 with the size of 3, softmax function in the last floor, and the training hyper-parameters in neural network are given in Table I.
+
+...Table
+
+\begin{table}[htbp]
+	\caption{The Parameters of Convolutional Codes.}
+	\begin{center}
+		\begin{tabular}{cccc}
+			\hline
+			\specialrule{0em}{1pt}{1pt}
+			Coding type & Coding rate & Constraint length & Generator  \\ 
+			\hline
+			\specialrule{0em}{1pt}{1pt}
+			C(2, 1, 3) & 1/2 & 3& (5, 7) \\
+			C(2, 1, 4) & 1/2 & 4& (15, 17) \\
+			C(2, 1, 5) & 1/2 & 5& (23, 35) \\
+			C(2, 1, 6) & 1/2 & 6& (53, 75) \\
+			C(2, 1, 7) & 1/2 & 7& (133, 171) \\
+			\multicolumn{4}{c}{} \\ 
+			C(3, 1, 3) & 1/3 & 3& (5, 7, 7) \\
+			C(3, 1, 4) & 1/3 & 4& (13, 15, 17) \\
+			C(3, 1, 5) & 1/3 & 5& (25, 33, 37) \\
+			C(3, 1, 6) & 1/3 & 6& (47, , 53, 75) \\
+			C(3, 1, 7) & 1/3 & 7& (133, 165, 171) \\
+			\multicolumn{4}{c}{} \\
+			C(4, 1, 3) & 1/3 & 3& (5, 7, 7, 7) \\
+			C(4, 1, 4) & 1/3 & 4& (13, 15, 15, 17) \\
+			C(4, 1, 5) & 1/3 & 5& (25, 27, 33, 37) \\
+			C(4, 1, 6) & 1/3 & 6& (53, 67, 71, 75) \\
+			C(4, 1, 7) & 1/3 & 7& (133, 171, 117, 165) \\
+			\hline
+		\end{tabular}
+		\label{tab1e}
+	\end{center}
+\end{table}
+
+There are $L_1, L_2, L_3, L_4$ in the candidate set $\Theta_{LDPC}$ as the LPDC coding parameters, they are obeyed IEEE 802.11n criterion. The four coding parameters with code length $n = 648$, information bit stream length $k = 342, 432, 486, 540$ and the coding rate $r = 1/2, 2/3, 3/4, 5/6$. We generate 20 million bit for each LDPC code, and the numbers of codewords in training datasets, test datasets, validation datasets are 162,000, 20,000, 18,000.
+
+We employ CUDA and Nvidia GTX2080Ti in experiments, and the experiment environment is python 3.7.9 and torch 1.8.1. It is accord with requirement of many experiments.
+
+In order to demonstrate the performance of our ECA-Net based neural network, we take simulation experiments to $L_1, L_2, L_3, L_4$ in Nakagami-m fading channel at SNR from -10dB to 20dB, Fig...
+
+...
+
+Meanwhile, so as to illustrate the precision to channel coding recognition of our model, Fig...
+
+...
+
+
+\section{Conclusion}
+This paper illustrate the feasibility of deep learning based channel coding recognition, this approach avoids manual feature extraction which need experience and professional skill, meanwhile enormously reduces computation complexity. A novel channel coding recognizer based ECA-Net was proposed and show that a predominant property in multi-path fading channel, this recognizer has also decent generalization ability.
+
+\bibliographystyle{IEEEtran} 
+\bibliography{paper-ref}
+
+\end{document}

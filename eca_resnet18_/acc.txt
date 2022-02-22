@@ -1,0 +1,3 @@
+0 tensor(100.0000, device='cuda:0')
+1 tensor(100.0000, device='cuda:0')
+2 Accuracy: 0.229000	classID:1	acc:1.000000		classID:2	acc:0.000000		classID:3	acc:0.000000		classID:4	acc:0.000000	
