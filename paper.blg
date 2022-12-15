@@ -1,0 +1,66 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: paper.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: IEEEtran.bst
+Reallocating 'name_of_file' (item size: 1) to 10 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Database file #1: paper-ref.bib
+Repeated entry---line 177 of file paper-ref.bib
+ : @article{shen2021blind
+ :                       ,
+I'm skipping whatever remains of this entry
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty author and editor in Interaction2009
+Warning--empty author and editor in IEEE2012802
+Warning--empty author and editor in IEEE2013802
+
+Done.
+You've used 42 entries,
+            4087 wiz_defined-function locations,
+            1041 strings with 15244 characters,
+and the built_in function-call counts, 39239 in all, are:
+= -- 3265
+> -- 943
+< -- 434
++ -- 556
+- -- 154
+* -- 1938
+:= -- 5562
+add.period$ -- 89
+call.type$ -- 42
+change.case$ -- 39
+chr.to.int$ -- 1002
+cite$ -- 45
+duplicate$ -- 2659
+empty$ -- 2853
+format.name$ -- 180
+if$ -- 9215
+int.to.chr$ -- 0
+int.to.str$ -- 42
+missing$ -- 422
+newline$ -- 149
+num.names$ -- 39
+pop$ -- 876
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 3039
+stack$ -- 0
+substring$ -- 2424
+swap$ -- 2435
+text.length$ -- 100
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 42
+warning$ -- 3
+while$ -- 188
+width$ -- 44
+write$ -- 452
+(There was 1 error message)
